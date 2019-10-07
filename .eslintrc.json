@@ -1,13 +1,13 @@
 {
   "parserOptions": {
     // Required for certain syntax usages
-    "ecmaVersion": 2017
+    "ecmaVersion": 2018
   },
-  "plugins": [
-    "promise"
-  ],
+  "plugins": ["promise"],
   "extends": "eslint:recommended",
   "rules": {
+    "quotes": ["error", "single"],
+    "comma-dangle": ["error", "never"],
     // Removed rule "disallow the use of console" from recommended eslint rules
     "no-console": "off",
 
@@ -60,7 +60,7 @@
     "no-extra-label": 1,
 
     // Disallow leading or trailing decimal points in numeric literals
-    "no-floating-decimal": 2,
+    "no-floating-decimal": 0,
 
     // Warn against shorthand type conversions
     "no-implicit-coercion": 1,
