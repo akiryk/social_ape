@@ -135,27 +135,20 @@ exports.likeScream = (req, res) => {
       }
     })
     .then(data => {
-      if (data.empty) {
-        // we can go ahead and create the like since it doesn't exist
-        return db
-          .collection('likes')
-          .add({
-            screamId: req.params.screamId,
-            userHandle: req.user.handle
-          })
-          .then(() => {
-            screamData.likeCount++;
-            return screamDocument.update({ likeCount: screamData.likeCount });
-          })
-          .then(() => {
-            return res.json(screamData);
-          })
-          .catch(err => console.log(err));
-      } else {
-        return res
-          .status(404)
-          .json({ error: 'Scream already liked by this user' });
+      if (!data.empty) {
+        return res.status(400).json({ error: 'Scream already liked' });
       }
+      return db.collection('likes').add({
+        screamId: req.params.screamId,
+        userHandle: req.user.handle
+      });
+    })
+    .then(() => {
+      screamData.likeCount++;
+      return screamDocument.update({ likeCount: screamData.likeCount });
+    })
+    .then(() => {
+      return res.json(screamData);
     })
     .catch(err => {
       return res.status(500).json({ error: err.code });
@@ -165,7 +158,7 @@ exports.likeScream = (req, res) => {
 exports.unlikeScream = (req, res) => {
   // check if the like already exists
   const likeDocument = db
-    .collection('unlikes')
+    .collection('likes')
     .where('userHandle', '==', req.user.handle)
     .where('screamId', '==', req.params.screamId)
     .limit(1);
@@ -188,25 +181,40 @@ exports.unlikeScream = (req, res) => {
     })
     .then(data => {
       if (data.empty) {
-        // we can go ahead and remove the like since it exists
-        return db
-          .doc(`/likes/${data.docs[0].data().id}`)
-          .delete()
-          .then(() => {
-            screamData.likeCount--;
-            return screamDocument.update({ likeCount: screamData.likeCount });
-          })
-          .then(() => {
-            return res.json(screamData);
-          })
-          .catch(err => console.log(err));
-      } else {
-        return res
-          .status(404)
-          .json({ error: 'Scream already unliked by this user' });
+        return res.status(400).json({ error: 'Scream not liked' });
       }
+      return db.doc(`/likes/${data.docs[0].id}`).delete();
+    })
+    .then(() => {
+      screamData.likeCount--;
+      return screamDocument.update({ likeCount: screamData.likeCount });
+    })
+    .then(() => {
+      return res.json(screamData);
     })
     .catch(err => {
       return res.status(500).json({ error: err.code });
+    });
+};
+
+exports.deleteScream = (req, res) => {
+  const screamDocument = db.doc(`/screams/${req.params.screamId}`);
+  screamDocument
+    .get()
+    .then(doc => {
+      if (!doc.exists) {
+        return res.status(404).json({ error: 'Scream not found' });
+      }
+      if (doc.data().userHandle !== req.user.handle) {
+        return res.status(403).json({ error: 'Not authorized to delete' });
+      }
+      console.log('TRY TO DELETE');
+      return screamDocument.delete();
+    })
+    .then(() => {
+      res.json({ message: 'Scream deleted successfully' });
+    })
+    .catch(err => {
+      res.status(500).json({ error: err.code });
     });
 };

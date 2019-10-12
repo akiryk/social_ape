@@ -15,9 +15,25 @@ _Note that if you use a different version of Node, you may need to reinstall fir
 
 ## Current Status
 
-Watched through video six, in which we check credentials before allowing user to submit a scream.
-Up Next [video 7](https://www.youtube.com/watch?v=K1KTJx49arA&list=PLMhAeHCz8S38ryyeMiBPPUnFAiWnoPvWP&index=7)
+- Add comment works (use POST)
+  `path/to/api/scream/SOMESCREAMID/comment`
 
-## Next Steps
+```json
+{
+  "body": "Some comment body"
+}
+```
 
-[Video about how to set up a firebase database](https://www.youtube.com/watch?v=haMOUb3KVSo) from the good people at Firebase
+- Add like works (use GET)
+  `path/to/api/scream/SOMESCREAMID/like`
+  No need for body
+
+- Unlike comment works (use GET)
+  `path/to/api/scream/SOMESCREAMID/like`
+
+- Delete scream works (use DELETE)
+  `path/to/api/scream/SOMESCREAMID/`
+  No need for word `delete` and no need for body
+
+Watched through video 11, in which we check credentials before allowing user to submit a scream.
+Up Next [video 12](https://www.youtube.com/watch?v=uu43m1SpbTA&list=PLMhAeHCz8S38ryyeMiBPPUnFAiWnoPvWP&index=12)
