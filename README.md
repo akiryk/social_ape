@@ -5,7 +5,7 @@ A tutorial about using firebase and react to create a social app. See [videos fr
 ## Setup
 
 ```sh
-cd Documents/projects/socialape-functions
+cd Documents/projects/socialape-functions/functions
 nvm use 8.13.0
 npm install -g firebase-tools
 firebase serve
