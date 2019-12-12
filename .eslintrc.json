@@ -6,7 +6,7 @@
   "plugins": ["promise"],
   "extends": "eslint:recommended",
   "rules": {
-    "quotes": ["error", "single"],
+    "quotes": ["error", "double"],
     "comma-dangle": ["error", "never"],
     // Removed rule "disallow the use of console" from recommended eslint rules
     "no-console": "off",
