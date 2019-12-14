@@ -10,17 +10,56 @@ nvm use 8.13.0
 npm install -g firebase-tools
 firebase serve
 ```
-
+It also works with v11.6.
 _Note that if you use a different version of Node, you may need to reinstall firebase tools_
 
-## Current Status
+## Test the REST API with Postman
 
-- Add comment works (use POST)
-  `path/to/api/scream/SOMESCREAMID/comment`
+### Get the test url
+- After running `firebase serve`, you will get a message in the console like `http function initialized (http://localhost:5000/simplereactapp-bed9b/us-east1/api)`.
+- Use the url it provides, e.g. http://localhost:5000/simplereactapp-bed9b/us-east1/api
+
+### Log in
+- Open Postman and use POST
+- Enter credentials using BODY and raw/JSON
+```json
+{
+  "email": "name@test.com",
+  "password": "password"
+}
+```
+
+### To do anything that requires login
+- Start by logging in, above.
+- This should return a token. Copy it to clipboard
+- Open the Authorization tab and select Type: Bearer Token.
+- Paste the copied token into the token input. It should not display as a temporary header in the Headers tab.
+
+### Get all screams
+- Login and add credentials to header, as above.
+- Open Postman and use GET
+- paste in the path to screams endpoint: `path/to/api/screams`
+
+### Post a new scream
+- Login and add credentials to header, as above.
+- Open Postman and use POST
+- paste in the path to screa endpoint: `path/to/api/scream`
+- Add a new scream using BODY and raw/JSON:
+```json
+{
+  "body": "My new scream"
+}
+```
+
+### Add a comment to a scream works
+- Login and add credentials to header, as above.
+- Open Postman and use POST
+- paste in the path to scream/comment endpoint: `path/to/api/scream/SOMESCREAMID/comment`
+-
 
 ```json
 {
-  "body": "Some comment body"
+  "body": "My comment on this scream"
 }
 ```
 

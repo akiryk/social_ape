@@ -1,53 +1,53 @@
-const isEmpty = (string = "") => string.trim() === "";
+const isEmpty = (string = '') => string.trim() === '';
 
 const isEmail = email => {
   // eslint-disable-next-line
-  const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return email.match(emailRegEx) ? true : false;
+    const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return !!email.match(emailRegEx);
 };
 
 exports.validateSignupData = ({ email, password, confirmPassword, handle }) => {
-  let errors = {};
+  const errors = {};
   if (isEmpty(email)) {
-    errors.email = "must not be empty";
+    errors.email = 'must not be empty';
   } else if (!isEmail(email)) {
-    errors.email = "must be a valid address";
+    errors.email = 'must be a valid address';
   }
 
   if (isEmpty(password)) {
-    errors.password = "must not be empty";
+    errors.password = 'must not be empty';
   }
 
   if (password !== confirmPassword) {
-    errors.confirmPassword = "passwords must match";
+    errors.confirmPassword = 'passwords must match';
   }
 
   if (isEmpty(handle)) {
-    errors.handle = "must not be empty";
+    errors.handle = 'must not be empty';
   }
 
-  const isValid = Object.keys(errors).length === 0 ? true : false;
+  const isValid = Object.keys(errors).length === 0;
 
   return { isValid, errors };
 };
 
 exports.validateLoginData = user => {
-  let errors = {};
+  const errors = {};
   if (isEmpty(user.email)) {
-    errors.email = "must not be empty";
+    errors.email = 'must not be empty';
   }
 
   if (isEmpty(user.password)) {
-    errors.password = "must not be empty";
+    errors.password = 'must not be empty';
   }
 
-  const isValid = Object.keys(errors).length === 0 ? true : false;
+  const isValid = Object.keys(errors).length === 0;
 
   return { isValid, errors };
 };
 
 exports.reduceUserDetails = user => {
-  let userDetails = {};
+  const userDetails = {};
   if (user.bio && !isEmpty(user.bio.trim())) {
     userDetails.bio = user.bio.trim();
   }

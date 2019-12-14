@@ -9,14 +9,14 @@ const {
   deleteScream,
   commentOnScream,
   likeScream,
-  unlikeScream
+  unlikeScream,
 } = require('./handlers/screams');
 const {
   signup,
   login,
   uploadImage,
   addUserDetails,
-  getAuthenticatedUser
+  getAuthenticatedUser,
 } = require('./handlers/users');
 
 // scream routes
@@ -51,13 +51,12 @@ exports.createNotificationOnLike = functions
             sender: snapshot.data().userHandle,
             type: 'like',
             read: false,
-            screamId: doc.id
+            screamId: doc.id,
           });
         }
       })
       .catch(err => {
         console.error(err);
-        return;
       });
   });
 
@@ -69,7 +68,6 @@ exports.DeleteNotificationOnUnlike = functions
       .delete()
       .catch(err => {
         console.error(err);
-        return;
       });
   });
 
@@ -87,13 +85,12 @@ exports.createNotificationOnComment = functions
             sender: snapshot.data().userHandle,
             type: 'comment',
             read: false,
-            screamId: doc.id
+            screamId: doc.id,
           });
         }
         return null;
       })
       .catch(err => {
         console.error(err);
-        return;
       });
   });
