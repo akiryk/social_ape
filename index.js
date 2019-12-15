@@ -1,7 +1,7 @@
 const functions = require('firebase-functions');
 const app = require('express')();
 const FBAuth = require('./util/fbAuth');
-
+const { db } = require('./util/admin');
 const {
   getAllScreams,
   postOneScream,
@@ -40,8 +40,9 @@ exports.api = functions.region('us-east1').https.onRequest(app);
 exports.createNotificationOnLike = functions
   .region('us-east1')
   .firestore.document('likes/{id}')
-  .onCreate(snapshot => {
-    db.doc(`screams/${snapshot.data().screamId}`)
+  .onCreate(snapshot =>
+    db
+      .doc(`screams/${snapshot.data().screamId}`)
       .get()
       .then(doc => {
         if (doc.exists) {
@@ -57,8 +58,8 @@ exports.createNotificationOnLike = functions
       })
       .catch(err => {
         console.error(err);
-      });
-  });
+      })
+  );
 
 exports.DeleteNotificationOnUnlike = functions
   .region('us-east1')
@@ -74,8 +75,9 @@ exports.DeleteNotificationOnUnlike = functions
 exports.createNotificationOnComment = functions
   .region('us-east1')
   .firestore.document('comments/{id}')
-  .onCreate(snapshot => {
-    db.doc(`screams/${snapshot.data().screamId}`)
+  .onCreate(snapshot =>
+    db
+      .doc(`screams/${snapshot.data().screamId}`)
       .get()
       .then(doc => {
         if (doc.exists) {
@@ -88,9 +90,8 @@ exports.createNotificationOnComment = functions
             screamId: doc.id,
           });
         }
-        return null;
       })
       .catch(err => {
         console.error(err);
-      });
-  });
+      })
+  );

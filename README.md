@@ -21,7 +21,9 @@ _Note that if you use a different version of Node, you may need to reinstall fir
 
 ### Log in
 - Open Postman and use POST
+- paste in the path to screams login endpoint: `path/to/api/login`
 - Enter credentials using BODY and raw/JSON
+- Gotchas: use JSON not "Text"; use POST not GET; no trailing comma after last entry
 ```json
 {
   "email": "name@test.com",
@@ -39,6 +41,7 @@ _Note that if you use a different version of Node, you may need to reinstall fir
 - Login and add credentials to header, as above.
 - Open Postman and use GET
 - paste in the path to screams endpoint: `path/to/api/screams`
+- Remove the body of request for GET (it may work locally, but not after deployment)
 
 ### Post a new scream
 - Login and add credentials to header, as above.
