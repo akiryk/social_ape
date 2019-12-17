@@ -75,8 +75,6 @@ exports.signup = (req, res) => {
 };
 
 exports.login = (req, res) => {
-  console.log('EMAIL');
-  console.log(req.body.email);
   const user = {
     email: req.body.email,
     password: req.body.password,

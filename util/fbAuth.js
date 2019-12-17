@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer ')
   ) {
-    const [bearer, token] = req.headers.authorization.split('Bearer ');
+    const [, token] = req.headers.authorization.split('Bearer ');
     idToken = token;
   } else {
     console.error('No token found');
