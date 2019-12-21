@@ -15,9 +15,7 @@ describe('Screams', function() {
     };
 
     const dbStub = sinon.stub(db, 'collection').returns(mockScreams);
-
     getAllScreams(req, res);
-
     expect(dbStub.calledOnce).to.be.true;
   });
 });
