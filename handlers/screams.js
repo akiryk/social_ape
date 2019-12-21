@@ -15,6 +15,7 @@ exports.getAllScreams = (req, res) => {
           likeCount: doc.data().likeCount || 0,
           commentCount: doc.data().commentCount || 0,
           createdAt: doc.data().createdAt,
+          userImage: doc.data().userImage,
         });
       });
       return res.json(screams);

@@ -1,4 +1,4 @@
-# Social App Firebase Tutorial
+# Social Ape Firebase Tutorial: Server
 
 A tutorial about using firebase and react to create a social app. See [videos from CodeCamp](https://www.youtube.com/watch?v=-vo7cu0xP4I&list=PLMhAeHCz8S38ryyeMiBPPUnFAiWnoPvWP&index=2).
 
@@ -77,5 +77,5 @@ _Note that if you use a different version of Node, you may need to reinstall fir
   `path/to/api/scream/SOMESCREAMID/`
   No need for word `delete` and no need for body
 
-Watched through video 11, in which we check credentials before allowing user to submit a scream.
-Up Next [video 12](https://www.youtube.com/watch?v=uu43m1SpbTA&list=PLMhAeHCz8S38ryyeMiBPPUnFAiWnoPvWP&index=12)
+Watched through video 13, completed the Firebase section.
+Onto the React section [video 14](https://www.youtube.com/watch?v=uu43m1SpbTA&list=PLMhAeHCz8S38ryyeMiBPPUnFAiWnoPvWP&index=14)
