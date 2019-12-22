@@ -6,7 +6,7 @@ const fs = require('fs');
 const config = require('../util/config.js');
 const { db, admin } = require('../util/admin');
 
-const firebaseStorageUrl = 'http://firebasestorage.googleapis.com/v0/b';
+const firebaseStorageUrl = 'https://firebasestorage.googleapis.com/v0/b';
 
 const {
   validateSignupData,
