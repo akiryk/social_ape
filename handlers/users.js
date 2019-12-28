@@ -6,8 +6,7 @@ const fs = require('fs');
 const config = require('../util/config.js');
 const { db, admin } = require('../util/admin');
 
-const firebaseStorageUrl = 'https://firebasestorage.googleapis.com/v0/b';
-
+const firebaseStorageUrl = 'http://firebasestorage.googleapis.com/v0/b';
 const {
   validateSignupData,
   validateLoginData,
@@ -59,7 +58,7 @@ exports.signup = (req, res) => {
         createdAt: new Date().toISOString(),
         imageUrl: `${firebaseStorageUrl}/${
           config.storageBucket
-        }/o/${noImg}?alt=media`,
+          }/o/${noImg}?alt=media`,
         userId,
       };
       return db.doc(`/users/${newUser.handle}`).set(userCredentials);
@@ -91,13 +90,24 @@ exports.login = (req, res) => {
     .then(data => data.user.getIdToken())
     .then(token => res.json({ token }))
     .catch(err => {
-      console.error(err);
-      if (err.code === 'auth/wrong-password') {
-        return res
-          .status(403)
-          .json({ general: 'Wrong credentials, please try again' });
+      console.error('oh...', err);
+      switch (err.code) {
+        case 'auth/invalid-email':
+          return res.status(400).json({ email: 'Incorrectly formatted email' });
+        case 'auth/wrong-password':
+          return res
+            .status(403)
+            .json({ password: 'Wrong credentials, please try again' });
+        case 'auth/user-not-found':
+          return res
+            .status(400)
+            .json({ email: 'Are you sure you are a user?' });
+        default:
+          return res.status(403).json({
+            // return res.status(500).json({ error: err.code });
+            unknownError: err.code,
+          });
       }
-      return res.status(500).json({ error: err.code });
     });
 };
 
@@ -195,7 +205,7 @@ exports.uploadImage = (req, res) => {
         // alt-media shows image on browser rather than downloading it
         const imageUrl = `${firebaseStorageUrl}/${
           config.storageBucket
-        }/o/${imageFileName}?alt=media`;
+          }/o/${imageFileName}?alt=media`;
         return db.doc(`users/${req.user.handle}`).update({ imageUrl });
       })
       .then(() => res.json({ message: 'Image uploaded successfully!' }))

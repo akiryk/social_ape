@@ -1,0 +1,32 @@
+[debug] [2019-12-22T15:24:13.757Z] ----------------------------------------------------------------------
+[debug] [2019-12-22T15:24:13.760Z] Command:       /Users/akiryk/.nvm/versions/node/v8.9.4/bin/node /Users/akiryk/.nvm/versions/node/v8.9.4/bin/firebase serve
+[debug] [2019-12-22T15:24:13.760Z] CLI Version:   6.8.0
+[debug] [2019-12-22T15:24:13.760Z] Platform:      darwin
+[debug] [2019-12-22T15:24:13.760Z] Node Version:  v8.9.4
+[debug] [2019-12-22T15:24:13.761Z] Time:          Sun Dec 22 2019 10:24:13 GMT-0500 (EST)
+[debug] [2019-12-22T15:24:13.761Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-12-22T15:24:13.776Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-12-22T15:24:13.776Z] > authorizing via signed-in user
+[debug] [2019-12-22T15:24:13.776Z] [iam] checking project simplereactapp-bed9b for permissions ["firebase.projects.get"]
+[debug] [2019-12-22T15:24:13.778Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2019-12-22T15:24:13.778Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2019-12-22T15:24:14.012Z] <<< HTTP RESPONSE 200
+[debug] [2019-12-22T15:24:14.021Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/simplereactapp-bed9b:testIamPermissions  
+
+[debug] [2019-12-22T15:24:14.368Z] <<< HTTP RESPONSE 200
+[debug] [2019-12-22T15:24:14.370Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/simplereactapp-bed9b  
+ 
+[debug] [2019-12-22T15:24:14.600Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/akiryk/Documents/projects/socialape-functions'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2019-12-22T15:24:15.566Z] Fetching environment
+[debug] [2019-12-22T15:24:15.568Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/393695939050:getServerAppConfig  
+ 
+[debug] [2019-12-22T15:24:15.973Z] <<< HTTP RESPONSE 200
+[debug] [2019-12-22T15:24:15.973Z] Starting @google-cloud/functions-emulator
+[debug] [2019-12-22T15:24:17.524Z] Parsing function triggers
+[info] ✔  functions: api: http://localhost:5000/simplereactapp-bed9b/us-central1/api
