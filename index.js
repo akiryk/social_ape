@@ -14,14 +14,14 @@ const {
   deleteScream,
   commentOnScream,
   likeScream,
-  unlikeScream,
+  unlikeScream
 } = require('./handlers/screams');
 const {
   signup,
   login,
   uploadImage,
   addUserDetails,
-  getAuthenticatedUser,
+  getAuthenticatedUser
 } = require('./handlers/users');
 
 // scream routes
@@ -53,11 +53,11 @@ exports.createNotificationOnLike = functions
         if (doc.exists) {
           return db.doc(`/notifications/${snapshot.id}`).set({
             createdAt: new Date().toISOString(),
-            recipient: doc.data().userHandle,
-            sender: snapshot.data().userHandle,
+            recipient: doc.data().username,
+            sender: snapshot.data().username,
             type: 'like',
             read: false,
-            screamId: doc.id,
+            screamId: doc.id
           });
         }
       })
@@ -88,11 +88,11 @@ exports.createNotificationOnComment = functions
         if (doc.exists) {
           return db.doc(`/notifications/${snapshot.id}`).set({
             createdAt: new Date().toISOString(),
-            recipient: doc.data().userHandle,
-            sender: snapshot.data().userHandle,
+            recipient: doc.data().username,
+            sender: snapshot.data().username,
             type: 'comment',
             read: false,
-            screamId: doc.id,
+            screamId: doc.id
           });
         }
       })
@@ -112,7 +112,7 @@ exports.onUserImageChange = functions
       const batch = db.batch();
       return db
         .collection('screams')
-        .where('userHandle', '==', change.before.data().handle)
+        .where('username', '==', change.before.data().username)
         .get()
         .then(data => {
           data.forEach(doc => {

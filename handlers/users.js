@@ -10,7 +10,7 @@ const firebaseStorageUrl = 'http://firebasestorage.googleapis.com/v0/b';
 const {
   validateSignupData,
   validateLoginData,
-  reduceUserDetails,
+  reduceUserDetails
 } = require('../util/validators');
 
 firebase.initializeApp(config);
@@ -23,8 +23,7 @@ exports.signup = (req, res) => {
   const newUser = {
     email: req.body.email,
     password: req.body.password,
-    confirmPassword: req.body.confirmPassword,
-    handle: req.body.handle,
+    username: req.body.username
   };
 
   const { isValid, errors } = validateSignupData(newUser);
@@ -36,11 +35,13 @@ exports.signup = (req, res) => {
   let token;
   let userId;
 
-  db.doc(`users/${newUser.handle}`)
+  db.doc(`users/${newUser.username}`)
     .get()
     .then(doc => {
       if (doc.exists) {
-        return res.status(400).json({ handle: 'this handle is already taken' });
+        return res
+          .status(400)
+          .json({ username: 'this username is already taken' });
       }
       return firebase
         .auth()
@@ -52,16 +53,16 @@ exports.signup = (req, res) => {
     })
     .then(tokenId => {
       token = tokenId;
+      const fbl = firebaseStorageUrl;
+      const cs = config.storageBucket;
       const userCredentials = {
-        handle: newUser.handle,
+        username: newUser.username,
         email: newUser.email,
         createdAt: new Date().toISOString(),
-        imageUrl: `${firebaseStorageUrl}/${
-          config.storageBucket
-          }/o/${noImg}?alt=media`,
-        userId,
+        imageUrl: `${fbl}/${cs}/o/${noImg}?alt=media`,
+        userId
       };
-      return db.doc(`/users/${newUser.handle}`).set(userCredentials);
+      return db.doc(`/users/${newUser.username}`).set(userCredentials);
     })
     .then(() => res.status(201).json({ token }))
     .catch(err => {
@@ -76,7 +77,7 @@ exports.signup = (req, res) => {
 exports.login = (req, res) => {
   const user = {
     email: req.body.email,
-    password: req.body.password,
+    password: req.body.password
   };
 
   const { isValid, errors } = validateLoginData(user);
@@ -105,7 +106,7 @@ exports.login = (req, res) => {
         default:
           return res.status(403).json({
             // return res.status(500).json({ error: err.code });
-            unknownError: err.code,
+            unknownError: err.code
           });
       }
     });
@@ -113,12 +114,12 @@ exports.login = (req, res) => {
 
 exports.addUserDetails = (req, res) => {
   const userDetails = reduceUserDetails(req.body);
-  db.doc(`/users/${req.user.handle}`)
+  db.doc(`/users/${req.user.username}`)
     .update(userDetails)
     .then(() =>
       res.json({
         message: 'successfully updated user details',
-        updatedDetails: { ...userDetails },
+        updatedDetails: { ...userDetails }
       })
     )
     .catch(err => res.status(500).json({ error: err.code }));
@@ -126,18 +127,23 @@ exports.addUserDetails = (req, res) => {
 
 exports.getAuthenticatedUser = (req, res) => {
   const userData = {};
-  db.doc(`/users/${req.user.handle}`)
+  console.log('R E Q', req.user);
+  db.doc(`/users/${req.user.username}`)
     .get()
     .then(doc => {
+      console.log('D O C', doc.exists, doc);
       if (doc.exists) {
         userData.credentials = doc.data();
-        return db
+        const likes = db
           .collection('likes')
-          .where('userHandle', '==', req.user.handle)
+          .where('userusername', '==', req.user.username)
           .get();
+        console.log('L I K E S', likes);
+        return likes;
       }
     })
     .then(data => {
+      console.log('D A T A', data);
       userData.likes = [];
       data.forEach(doc => {
         userData.likes.push(doc.data());
@@ -145,7 +151,7 @@ exports.getAuthenticatedUser = (req, res) => {
       // return res.json(userData);
       return db
         .collection('notifications')
-        .where('recipient', '==', req.user.handle)
+        .where('recipient', '==', req.user.username)
         .orderBy('createdAt', 'desc')
         .limit(10)
         .get();
@@ -160,7 +166,7 @@ exports.getAuthenticatedUser = (req, res) => {
           screamId: doc.data().screamId,
           type: doc.data().type,
           read: doc.data().read,
-          notificationId: doc.id,
+          notificationId: doc.id
         });
       });
       return res.json(userData);
@@ -197,16 +203,15 @@ exports.uploadImage = (req, res) => {
         resumable: false,
         metadata: {
           metadata: {
-            dType: imageToBeUploaded.mimetype,
-          },
-        },
+            dType: imageToBeUploaded.mimetype
+          }
+        }
       })
       .then(() => {
+        const cs = config.storageBucket;
         // alt-media shows image on browser rather than downloading it
-        const imageUrl = `${firebaseStorageUrl}/${
-          config.storageBucket
-          }/o/${imageFileName}?alt=media`;
-        return db.doc(`users/${req.user.handle}`).update({ imageUrl });
+        const imageUrl = `${firebaseStorageUrl}/${cs}/o/${imageFileName}?alt=media`;
+        return db.doc(`users/${req.user.username}`).update({ imageUrl });
       })
       .then(() => res.json({ message: 'Image uploaded successfully!' }))
       .catch(err => {

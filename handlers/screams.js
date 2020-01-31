@@ -11,11 +11,11 @@ exports.getAllScreams = (req, res) => {
         screams.push({
           screamId: doc.id,
           body: doc.data().body,
-          userHandle: doc.data().userHandle || doc.data().userName,
+          username: doc.data().username || doc.data().userName,
           likeCount: doc.data().likeCount || 0,
           commentCount: doc.data().commentCount || 0,
           createdAt: doc.data().createdAt,
-          userImage: doc.data().userImage,
+          userImage: doc.data().userImage
         });
       });
       return res.json(screams);
@@ -29,11 +29,11 @@ exports.postOneScream = (req, res) => {
   }
   const newScream = {
     body: req.body.body,
-    userHandle: req.user.handle,
+    username: req.user.username,
     userImage: req.user.imageUrl,
     createdAt: new Date().toISOString(),
     likeCount: 0,
-    commentCount: 0,
+    commentCount: 0
   };
 
   db.collection('screams')
@@ -83,8 +83,8 @@ exports.commentOnScream = (req, res) => {
     body: req.body.body,
     createdAt: new Date().toISOString(),
     screamId: req.params.screamId,
-    userHandle: req.user.handle,
-    userImage: req.user.imageUrl,
+    username: req.user.username,
+    userImage: req.user.imageUrl
   };
 
   db.doc(`/screams/${req.params.screamId}`)
@@ -104,7 +104,7 @@ exports.commentOnScream = (req, res) => {
     .catch(err => {
       console.error(err);
       return res.status(500).json({
-        error: 'Something went wrong adding a new comment',
+        error: 'Something went wrong adding a new comment'
       });
     });
 };
@@ -113,7 +113,7 @@ exports.likeScream = (req, res) => {
   // check if the like already exists
   const likeDocument = db
     .collection('likes')
-    .where('userHandle', '==', req.user.handle)
+    .where('username', '==', req.user.username)
     .where('screamId', '==', req.params.screamId)
     .limit(1);
   // check if the scream already exists
@@ -136,7 +136,7 @@ exports.likeScream = (req, res) => {
           .collection('likes')
           .add({
             screamId: req.params.screamId,
-            userHandle: req.user.handle,
+            username: req.user.username
           })
           .then(() => {
             screamData.likeCount += 1;
@@ -153,7 +153,7 @@ exports.unlikeScream = (req, res) => {
   // check if the like already exists
   const likeDocument = db
     .collection('likes')
-    .where('userHandle', '==', req.user.handle)
+    .where('username', '==', req.user.username)
     .where('screamId', '==', req.params.screamId)
     .limit(1);
 
@@ -194,7 +194,7 @@ exports.deleteScream = (req, res) => {
       if (!doc.exists) {
         return res.status(404).json({ error: 'Scream not found' });
       }
-      if (doc.data().userHandle !== req.user.handle) {
+      if (doc.data().username !== req.user.username) {
         return res.status(403).json({ error: 'Not authorized to delete' });
       }
       console.log('TRY TO DELETE');

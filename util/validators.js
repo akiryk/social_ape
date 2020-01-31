@@ -2,11 +2,11 @@ const isEmpty = (string = '') => string.trim() === '';
 
 const isEmail = email => {
   // eslint-disable-next-line
-  const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  const emailRegEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return !!email.match(emailRegEx);
 };
 
-exports.validateSignupData = ({ email, password, confirmPassword, handle }) => {
+exports.validateSignupData = ({ email, password, username }) => {
   const errors = {};
   if (isEmpty(email)) {
     errors.email = 'must not be empty';
@@ -18,12 +18,8 @@ exports.validateSignupData = ({ email, password, confirmPassword, handle }) => {
     errors.password = 'must not be empty';
   }
 
-  if (password !== confirmPassword) {
-    errors.confirmPassword = 'passwords must match';
-  }
-
-  if (isEmpty(handle)) {
-    errors.handle = 'must not be empty';
+  if (isEmpty(username)) {
+    errors.username = 'must not be empty';
   }
 
   const isValid = Object.keys(errors).length === 0;

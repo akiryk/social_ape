@@ -10,20 +10,45 @@ nvm use 8.13.0
 npm install -g firebase-tools
 firebase serve
 ```
+
 It also works with v11.6.
 _Note that if you use a different version of Node, you may need to reinstall firebase tools_
+
+## Authorization and Routes
+
+The following require auth using `/util/fbAuth` middleware.
+
+- POST: `/scream/:screamId`
+- POST: `/scream` (create a new scream)
+- DELETE: `/scream/:screamId`
+- GET: `/scream/:screamId/like`
+- GET: `/scream/:screamId/unlike`
+- POST: `/scream/:screamId/comment`
+- POST: `/user/image`
+- POST: `/user` (add user details)
+- GET: `/user` (get user details)
+
+The following do not require auth
+
+- GET `/screams` get all screams
+- GET `/scream/:screamID`
+- POST `/signup`
+- POST `/login`
 
 ## Test the REST API with Postman
 
 ### Get the test url
+
 - After running `firebase serve`, you will get a message in the console like `http function initialized (http://localhost:5000/simplereactapp-bed9b/us-east1/api)`.
 - Use the url it provides, e.g. http://localhost:5000/simplereactapp-bed9b/us-east1/api
 
 ### Log in
+
 - Open Postman and use POST
 - paste in the path to screams login endpoint: `path/to/api/login`
 - Enter credentials using BODY and raw/JSON
 - Gotchas: use JSON not "Text"; use POST not GET; no trailing comma after last entry
+
 ```json
 {
   "email": "name@test.com",
@@ -32,22 +57,26 @@ _Note that if you use a different version of Node, you may need to reinstall fir
 ```
 
 ### To do anything that requires login
+
 - Start by logging in, above.
 - This should return a token. Copy it to clipboard
 - Open the Authorization tab and select Type: Bearer Token.
 - Paste the copied token into the token input. It should not display as a temporary header in the Headers tab.
 
 ### Get all screams
+
 - Login and add credentials to header, as above.
 - Open Postman and use GET
 - paste in the path to screams endpoint: `path/to/api/screams`
 - Remove the body of request for GET (it may work locally, but not after deployment)
 
 ### Post a new scream
+
 - Login and add credentials to header, as above.
 - Open Postman and use POST
 - paste in the path to screa endpoint: `path/to/api/scream`
 - Add a new scream using BODY and raw/JSON:
+
 ```json
 {
   "body": "My new scream"
@@ -55,6 +84,7 @@ _Note that if you use a different version of Node, you may need to reinstall fir
 ```
 
 ### Add a comment to a scream works
+
 - Login and add credentials to header, as above.
 - Open Postman and use POST
 - paste in the path to scream/comment endpoint: `path/to/api/scream/SOMESCREAMID/comment`
